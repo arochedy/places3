@@ -1,0 +1,16 @@
+{
+    "name": "truffle-project",
+    "version": "0.1.0",
+    "description": "Truffle project with SimpleStorage contract",
+    "scripts": {
+        "migrate": "cd truffle && truffle migrate --network development --reset && cd ..",
+        "dev": "cd client && npm run start && cd ..",
+        "blockchain": "ganache -m 'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat'",
+        "gas-reporter":"cd hardhat && npm run test:gas && cd ..",
+        "test3": "&& REPORT_GAS=true && npx hardhat test"
+    },
+    "dependencies": {
+      "@truffle/hdwallet-provider": "^2.1.7"
+    }
+  }
+  

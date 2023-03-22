@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "test:gas": "REPORT_GAS=true && npx hardhat test"
+    }
+}

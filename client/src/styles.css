@@ -1,0 +1,9 @@
+.row{
+    display: flex;
+    flex-direction: row;
+  
+}
+
+.colors{
+  margin-bottom: 30px;
+}
