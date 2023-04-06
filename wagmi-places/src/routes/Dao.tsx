@@ -142,7 +142,7 @@ export const Dao = () => {
                 onChange={(text) => setDescription(text.target.value)}
               />
               <NumberInput
-                onChange={(value) => setXMin(value)}
+                onChange={(value) => setXMin(Number(value))}
                 defaultValue={0}
                 min={0}
                 max={200}
@@ -154,7 +154,7 @@ export const Dao = () => {
                 </NumberInputStepper>
               </NumberInput>
               <NumberInput
-                onChange={(value) => setYMin(value)}
+                onChange={(value) => setYMin(Number(value))}
                 defaultValue={0}
                 min={0}
                 max={200}
@@ -166,7 +166,7 @@ export const Dao = () => {
                 </NumberInputStepper>
               </NumberInput>
               <NumberInput
-                onChange={(value) => setXMax(value)}
+                onChange={(value) => setXMax(Number(value))}
                 defaultValue={0}
                 min={0}
                 max={200}
@@ -178,7 +178,7 @@ export const Dao = () => {
                 </NumberInputStepper>
               </NumberInput>
               <NumberInput
-                onChange={(value) => setYMax(value)}
+                onChange={(value) => setYMax(Number(value))}
                 defaultValue={0}
                 min={0}
                 max={200}
