@@ -1,0 +1,37 @@
+{
+  "name": "wagmi-places",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.5.5",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@wagmi/core": "^0.10.8",
+    "buffer": "^6.0.3",
+    "ethers": "^5.7.2",
+    "framer-motion": "^10.10.0",
+    "konva": "^8.4.3",
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.1",
+    "process": "^0.11.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-konva": "^18.2.5",
+    "react-router-dom": "^6.10.0",
+    "sort-by": "^1.2.0",
+    "util": "^0.12.4",
+    "wagmi": "~0.12.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.3",
+    "@vitejs/plugin-react": "^2.1.0",
+    "typescript": "^4.9.4",
+    "vite": "^3.1.8"
+  }
+}

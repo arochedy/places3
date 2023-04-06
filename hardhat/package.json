@@ -1,5 +1,25 @@
 {
-    "scripts": {
-        "test:gas": "REPORT_GAS=true && npx hardhat test"
-    }
+  "name": "truffle-project",
+  "version": "0.1.0",
+  "description": "Truffle project with SimpleStorage contract",
+  "scripts": {
+    "migrate": "cd truffle && truffle migrate --network development --reset && cd ..",
+    "dev": "cd client && npm run start && cd ..",
+    "blockchain": "ganache -m 'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat'",
+    "test": "npx hardhat test",
+    "coverage": "npx hardhat coverage",
+    "gas": "REPORT_GAS=true && npm run test"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "@types/fs-extra": "^11.0.1",
+    "hardhat": "^2.13.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "fs-extra": "^11.1.1",
+    "hardhat-gas-reporter": "^1.0.9"
+  }
 }
