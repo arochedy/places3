@@ -1,4 +1,5 @@
-export const daoAddress = "0x06852ac703ac230f65ae3e633d178f6e749F50F7";
+export const daoAddress = "0xf0256EB17469eE119683131b4a7Ab8030dE58a93";
+
 
 export const daoAbi = [
   {
