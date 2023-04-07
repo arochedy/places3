@@ -5,6 +5,7 @@
   "scripts": {
     "migrate": "cd hardhat && npx hardhat run scripts/deploy.ts --network localhost  && cd ..",
     "deploy": "cd hardhat && npx hardhat run scripts/deploy.ts --network mumbai  && cd ..",
+    "batman": "cd hardhat && npx hardhat run scripts/batman.ts --network mumbai  && cd ..",
     "dev": "cd wagmi-places && npm run dev && cd ..",
     "blockchain": "ganache -m 'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat'",
     "gas": "cd hardhat && npm run gas && cd ..",

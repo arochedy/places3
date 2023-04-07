@@ -6,7 +6,7 @@ import { BigNumber } from "ethers";
 import { Container, Button } from "@chakra-ui/react";
 import { Heading } from "@chakra-ui/react";
 import { DaoInfo } from "./DaoInfo";
-import { Dao } from "./Dao";
+import { DaoActions } from "./DaoActions";
 
 export const DaoPage = () => {
   const [isVoter, setIsVoter] = React.useState<boolean>(false);
@@ -35,7 +35,7 @@ export const DaoPage = () => {
     <Container>
       <Button onClick={() => (location.href = "/")}>Retour à la carte</Button>
       <Heading>DAO</Heading>
-      {isVoter ? <Dao /> : <DaoInfo />}
+      {isVoter ? <DaoActions /> : <DaoInfo />}
     </Container>
   );
 };

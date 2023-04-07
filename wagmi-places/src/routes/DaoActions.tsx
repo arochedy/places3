@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { placesAbi, placesAddress } from "../abi/places-abi";
 import {
   useContractRead,
   useContractReads,
@@ -24,86 +23,29 @@ import {
   TabList,
   TabPanels,
   TabPanel,
+  Heading,
 } from "@chakra-ui/react";
-import { Highlight, Heading } from "@chakra-ui/react";
 import { DaoProposals } from "../components/DaoProposals";
 
-enum PropTypes {
-  "erase" = 0,
-  "changeMapSize" = 1,
-}
-export const Dao = () => {
-  // DAO deployed to
-  const [propType, setPropType] = React.useState<PropTypes>();
+export const DaoActions = () => {
   const [description, setDescription] = React.useState<string>();
-  const [xMin, setXMin] = React.useState<number>();
-  const [yMin, setYMin] = React.useState<number>();
-  const [xMax, setXMax] = React.useState<number>();
-  const [yMax, setYMax] = React.useState<number>();
-  const [isVoter, setIsVoter] = React.useState<boolean>(false);
-  // useContractEvent({
-  //   address: daoAddress,
-  //   abi: daoAbi,
-  //   eventName: "VoteForColorPixel",
-  //   listener(node, label, owner) {
-  //     console.log("test");
-  //     console.log(node, label, owner);
-  //   },
-  // });
+  const [xMin, setXMin] = React.useState<number>(0);
+  const [yMin, setYMin] = React.useState<number>(0);
+  const [xMax, setXMax] = React.useState<number>(0);
+  const [yMax, setYMax] = React.useState<number>(0);
 
-  // const { data, isError, isLoading } = useContractReads({
-  //   contracts: [
-  //     {
-  //       address: daoAddress,
-  //       abi: daoAbi,
-  //       functionName: "erasePixelsProposals",
-  //     },
-  //     // ,
-  //     // {
-  //     //   address: daoAddress,
-  //     //   abi: daoAbi,
-  //     //   functionName: "getPixels",
-  //     // },
-  //     // {
-  //     //   address: daoAddress,
-  //     //   abi: daoAbi,
-  //     //   functionName: "mapWidth",
-  //     // },
-  //     // {
-  //     //   address: daoAddress,
-  //     //   abi: daoAbi,
-  //     //   functionName: "mapHeight",
-  //     // },
-  //   ],
-  // });
   const { isConnected, address } = useAccount();
-
-  const {
-    data: userVoteCountData,
-    isError,
-    isLoading,
-  } = useContractRead({
-    address: placesAddress,
-    abi: placesAbi,
-    functionName: "userVoteCount",
-    args: [address],
-  });
-
-  useEffect(() => {
-    if (userVoteCountData) {
-      setIsVoter(userVoteCountData > 0);
-    }
-  }, [userVoteCountData]);
 
   const { config } = usePrepareContractWrite({
     address: daoAddress,
     abi: daoAbi,
     functionName: "addEraseProposal",
-    args: [description, xMin, yMin, xMax, yMin],
+    args: [description, xMin, yMin, xMax, yMax],
     onError: (error) => {
       console.log(error);
     },
   });
+
   const {
     data: dataWrite,
     write: writeErasePixel,
@@ -120,12 +62,28 @@ export const Dao = () => {
     hash: dataWrite?.hash,
   });
 
+  const {
+    data: dataWriteChangeMapSize,
+    write: writeChangeMapSize,
+    isError: isErrorWriteChangeMapSize,
+    isLoading: isLoadingWriteChangeMapSize,
+    error: isErrorChangeMapSize,
+  } = useContractWrite(config);
+
+  const {
+    isLoading: isLoadingResultChangeMapSize,
+    isSuccess: iSuccessMapSize,
+    data: dataWriteChnageMapSizeEnd,
+  } = useWaitForTransaction({
+    hash: dataWriteChangeMapSize?.hash,
+  });
+
   return (
     <Container>
       <Tabs>
         <TabList>
-          <Tab> Effacer des pixels</Tab>
-          <Tab> Agrandir la carte</Tab>
+          <Tab>Effacer des pixels</Tab>
+          <Tab>Agrandir la carte</Tab>
           <Tab>Voter pour une proposition</Tab>
         </TabList>
 
@@ -197,14 +155,9 @@ export const Dao = () => {
               <Heading>Changer la taille de la carte</Heading>
 
               <Heading lineHeight="short" size="xs">
-                <Highlight
-                  query="agrandir"
-                  styles={{ px: "2", py: "1", rounded: "full", bg: "red.100" }}
-                >
-                  Vous pouvez proposer d'agrandir la taille de la carte
-                </Highlight>
+                Vous pouvez proposer d'agrandir la taille de la carte
               </Heading>
-              <p></p>
+
               <Input placeholder="description" />
 
               <NumberInput defaultValue={15} min={10} max={20}>

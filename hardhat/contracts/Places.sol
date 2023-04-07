@@ -45,23 +45,23 @@ contract Places is Ownable {
     event MapSizeChanged(uint32 newMapWidth, uint32 newMapHeight);
 
     constructor() {
-        Color memory white = Color(0, 0, 0);
+        Color memory black = Color(0, 0, 0);
         Color memory red = Color(255, 0, 0);
         Color memory green = Color(0, 255, 0);
         Color memory blue = Color(0, 0, 255);
         Color memory yellow = Color(255, 255, 0);
         Color memory purple = Color(255, 0, 255);
         Color memory cyan = Color(0, 255, 255);
-        Color memory black = Color(255, 255, 255);
+        Color memory white = Color(255, 255, 255);
 
-        colors.push(white);
+        colors.push(black);
         colors.push(red);
         colors.push(green);
         colors.push(blue);
         colors.push(yellow);
         colors.push(purple);
         colors.push(cyan);
-        colors.push(black);
+        colors.push(white);
     }
 
     function votePixel(uint16 x, uint16 y, uint32 colorId) public {

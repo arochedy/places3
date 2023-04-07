@@ -9,10 +9,7 @@ async function main() {
 
   await places.deployed();
 
-  // places.addColor(255, 0, 0);
-  // places.addColor(0, 255, 0);
-  // places.addColor(0, 0, 255);
-  // places.addColor(255, 255, 0);
+
 
   const daoFactory = await ethers.getContractFactory("PlacesDao");
   const dao = await daoFactory.deploy(places.address);

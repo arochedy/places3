@@ -6,8 +6,6 @@ import { App } from "./routes/App";
 import { client } from "./wagmi";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Info } from "./routes/Info";
-import { DaoInfo } from "./routes/DaoInfo";
-import { Dao } from "./routes/Dao";
 import { ChakraProvider } from "@chakra-ui/react";
 import { DaoPage } from "./routes/DaoPage";
 
