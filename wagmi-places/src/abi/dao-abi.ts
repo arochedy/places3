@@ -1,4 +1,4 @@
-export const daoAddress = "0x4EB5152AE00e26Bfd411616F1644D54254686D23";
+export const daoAddress = "0x06852ac703ac230f65ae3e633d178f6e749F50F7";
 
 export const daoAbi = [
   {
@@ -202,20 +202,8 @@ export const daoAbi = [
       },
       {
         indexed: false,
-        internalType: "bool",
-        name: "voteFor",
-        type: "bool",
-      },
-      {
-        indexed: false,
         internalType: "uint256",
         name: "votesFor",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "votesAgainst",
         type: "uint256",
       },
     ],
@@ -233,11 +221,6 @@ export const daoAbi = [
         internalType: "enum PlacesDao.ProposalTypes",
         name: "_proposalType",
         type: "uint8",
-      },
-      {
-        internalType: "bool",
-        name: "_voteFor",
-        type: "bool",
       },
     ],
     name: "VoteForProposal",
@@ -511,11 +494,6 @@ export const daoAbi = [
             name: "votesFor",
             type: "uint256",
           },
-          {
-            internalType: "uint256",
-            name: "votesAgainst",
-            type: "uint256",
-          },
         ],
         internalType: "struct PlacesDao.BaseProposal[]",
         name: "",
@@ -576,11 +554,6 @@ export const daoAbi = [
             name: "votesFor",
             type: "uint256",
           },
-          {
-            internalType: "uint256",
-            name: "votesAgainst",
-            type: "uint256",
-          },
         ],
         internalType: "struct PlacesDao.BaseProposal[]",
         name: "",
@@ -614,11 +587,6 @@ export const daoAbi = [
           {
             internalType: "uint256",
             name: "votesFor",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "votesAgainst",
             type: "uint256",
           },
         ],
@@ -726,11 +694,6 @@ export const daoAbi = [
             name: "votesFor",
             type: "uint256",
           },
-          {
-            internalType: "uint256",
-            name: "votesAgainst",
-            type: "uint256",
-          },
         ],
         internalType: "struct PlacesDao.BaseProposal",
         name: "",
@@ -781,11 +744,6 @@ export const daoAbi = [
       {
         internalType: "uint256",
         name: "votesFor",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "votesAgainst",
         type: "uint256",
       },
     ],
@@ -849,11 +807,6 @@ export const daoAbi = [
       {
         internalType: "bool",
         name: "hasVoted",
-        type: "bool",
-      },
-      {
-        internalType: "bool",
-        name: "voteFor",
         type: "bool",
       },
       {

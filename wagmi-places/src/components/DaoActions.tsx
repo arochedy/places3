@@ -25,7 +25,7 @@ import {
   TabPanel,
   Heading,
 } from "@chakra-ui/react";
-import { DaoProposals } from "../components/DaoProposals";
+import { DaoProposals } from "./DaoProposals";
 
 export const DaoActions = () => {
   const [description, setDescription] = React.useState<string>();
@@ -33,6 +33,12 @@ export const DaoActions = () => {
   const [yMin, setYMin] = React.useState<number>(0);
   const [xMax, setXMax] = React.useState<number>(0);
   const [yMax, setYMax] = React.useState<number>(0);
+  const [red, setRed] = React.useState<number>(0);
+  const [green, setGreen] = React.useState<number>(0);
+  const [blue, setBlue] = React.useState<number>(0);
+  const [mapWidth, setMapWidth] = React.useState<number>(0);
+
+  const [mapHeight, setMapHeight] = React.useState<number>(0);
 
   const { isConnected, address } = useAccount();
 
@@ -62,13 +68,25 @@ export const DaoActions = () => {
     hash: dataWrite?.hash,
   });
 
+  /* change mapSize */
+  const { config: configChangeMapSize, isError: isErrorWriteChangeMapSize } =
+    usePrepareContractWrite({
+      address: daoAddress,
+      abi: daoAbi,
+      functionName: "addChangeMapSizeProposal",
+      args: [description, 400, 405],
+      onError: (error) => {
+        console.log("ici", error);
+      },
+    });
+
   const {
     data: dataWriteChangeMapSize,
     write: writeChangeMapSize,
-    isError: isErrorWriteChangeMapSize,
+    // isError: isErrorWriteChangeMapSize,
     isLoading: isLoadingWriteChangeMapSize,
     error: isErrorChangeMapSize,
-  } = useContractWrite(config);
+  } = useContractWrite(configChangeMapSize);
 
   const {
     isLoading: isLoadingResultChangeMapSize,
@@ -78,11 +96,41 @@ export const DaoActions = () => {
     hash: dataWriteChangeMapSize?.hash,
   });
 
+  /* end change mapSize */
+
+  /* add color */
+  const { config: configAddColor } = usePrepareContractWrite({
+    address: daoAddress,
+    abi: daoAbi,
+    functionName: "addAddColorProposal",
+    args: [description, red, green, blue],
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  const {
+    data: dataWriteAddColor,
+    write: writeAddColor,
+    isError: isErrorWriteAddColor,
+    isLoading: isLoadingWriteAddColor,
+    error: isErrorAddColor,
+  } = useContractWrite(configAddColor);
+
+  const {
+    isLoading: isLoadingAddColor,
+    isSuccess: isSuccessAddColor,
+    data: dataWriteAddColorEnd,
+  } = useWaitForTransaction({
+    hash: dataWriteAddColor?.hash,
+  });
+  /* end add color */
+
   return (
     <Container>
       <Tabs>
         <TabList>
           <Tab>Effacer des pixels</Tab>
+          <Tab>Ajouter une couleur</Tab>
           <Tab>Agrandir la carte</Tab>
           <Tab>Voter pour une proposition</Tab>
         </TabList>
@@ -152,15 +200,80 @@ export const DaoActions = () => {
           </TabPanel>
           <TabPanel>
             <div>
+              <Heading>Ajouter une couleur</Heading>
+
+              <Heading lineHeight="short" size="xs">
+                Vous pouvez proposer d'ajouter une couleur
+              </Heading>
+
+              <Input
+                placeholder="description"
+                onChange={(text) => setDescription(text.target.value)}
+              />
+
+              <NumberInput
+                defaultValue={0}
+                min={0}
+                max={255}
+                placeholder="Rouge"
+                onChange={(value) => setRed(Number(value))}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+
+              <NumberInput
+                defaultValue={0}
+                min={0}
+                max={255}
+                placeholder="Vert"
+                onChange={(value) => setGreen(Number(value))}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+
+              <NumberInput
+                defaultValue={0}
+                min={0}
+                max={255}
+                placeholder="Bleu"
+                onChange={(value) => setBlue(Number(value))}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+              <Button onClick={() => writeAddColor?.()}>Valider</Button>
+            </div>
+          </TabPanel>
+          <TabPanel>
+            <div>
               <Heading>Changer la taille de la carte</Heading>
 
               <Heading lineHeight="short" size="xs">
                 Vous pouvez proposer d'agrandir la taille de la carte
               </Heading>
 
-              <Input placeholder="description" />
+              <Input
+                placeholder="description"
+                onChange={(text) => setDescription(text.target.value)}
+              />
 
-              <NumberInput defaultValue={15} min={10} max={20}>
+              <NumberInput
+                defaultValue={250}
+                min={250}
+                placeholder="Largeur"
+                onChange={(value) => setMapWidth(Number(value))}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -168,14 +281,19 @@ export const DaoActions = () => {
                 </NumberInputStepper>
               </NumberInput>
 
-              <NumberInput defaultValue={15} min={10} max={20}>
+              <NumberInput
+                defaultValue={250}
+                min={250}
+                placeholder="Hauteur"
+                onChange={(value) => setMapHeight(Number(value))}
+              >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
-              <Button onClick={() => console.log("test")}>Valider</Button>
+              <Button onClick={() => writeChangeMapSize?.()}>Valider</Button>
             </div>
           </TabPanel>
           <TabPanel>

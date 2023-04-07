@@ -43,21 +43,6 @@ export const DaoInfo = () => {
           effacer
         </li>
       </ul>
-      <h2>Règles de la DAO</h2>
-      <p>
-        Pour garantir une expérience agréable pour tous les utilisateurs, nous
-        vous demandons de respecter les règles suivantes :
-      </p>
-      <ul>
-        <li>Proposez des idées constructives et respectueuses</li>
-        <li>Ne votez qu'une seule fois pour chaque proposition</li>
-        <li>Ne publiez pas de contenu offensant ou inapproprié</li>
-        <li>Respectez les choix des autres membres de la DAO</li>
-        <li>
-          En cas de non-respect de ces règles, nous nous réservons le droit de
-          supprimer votre compte et de vous empêcher d'utiliser le site
-        </li>
-      </ul>
       <h2>Bonne utilisation !</h2>
       <p>
         Nous espérons que vous apprécierez notre site web de DAO de la carte de

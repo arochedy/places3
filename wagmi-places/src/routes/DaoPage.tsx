@@ -6,7 +6,7 @@ import { BigNumber } from "ethers";
 import { Container, Button } from "@chakra-ui/react";
 import { Heading } from "@chakra-ui/react";
 import { DaoInfo } from "./DaoInfo";
-import { DaoActions } from "./DaoActions";
+import { DaoActions } from "../components/DaoActions";
 
 export const DaoPage = () => {
   const [isVoter, setIsVoter] = React.useState<boolean>(false);

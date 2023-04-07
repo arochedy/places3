@@ -9,12 +9,12 @@ async function main() {
 
   await places.deployed();
 
-
-
   const daoFactory = await ethers.getContractFactory("PlacesDao");
   const dao = await daoFactory.deploy(places.address);
 
   await dao.deployed();
+
+  await places.transferOwnership(dao.address);
 
   //Déplacez le fichier JSON du contrat compilé vers le dossier du client
   // const clientDir = path.resolve(__dirname, "../../wagmi-places/src/contracts");

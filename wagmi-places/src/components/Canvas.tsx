@@ -167,7 +167,7 @@ export function Canvas() {
           y: j,
           color:
             pixel == undefined
-              ? getColorFromIndex(colors.length - 1, colors)
+              ? getColorFromIndex(0, colors)
               : getColorFromIndex(pixel.colorId, colors),
         };
         newRect.push(rect);
