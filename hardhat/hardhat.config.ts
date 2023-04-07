@@ -23,7 +23,10 @@ const config: HardhatUserConfig = {
     mumbai: {
       url: `https://polygon-mumbai.g.alchemy.com/v2/${PROJECT_ID}`,
       // `https://polygon-mumbai.infura.io/v3/${INFURA_ID}`,
-      accounts: [PRIVATE_KEY],
+      accounts: [
+        PRIVATE_KEY ??
+          "b0864106aa78591b301febb4f32ef7695c61b683cdbcde3973c18cd40ebb4a34",
+      ], //fake private key for testing lolca & cit
       chainId: 80001,
 
       // provider: () =>

@@ -9,7 +9,7 @@
     "test": "npx hardhat test",
     "coverage": "npx hardhat coverage",
     "gas": "REPORT_GAS=true && npm run test",
-    "ci-test" : "npx hardhat node & npx hardhat run scripts/deploy.ts --network localhost && sleep 10 && npx hardhat test --network localhost"
+    "ci-test" : "npx hardhat node  & npx hardhat run scripts/deploy.ts --network localhost && sleep 10 && npx hardhat test --network localhost"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
