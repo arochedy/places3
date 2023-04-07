@@ -11,6 +11,8 @@
     "gas": "cd hardhat && npm run gas && cd ..",
     "coverage": "cd hardhat && npx hardhat coverage && cd ..",
     "test": "cd hardhat && npx hardhat test && cd ..",
-    "test3": "&& REPORT_GAS=true && npx hardhat test"
+    "test3": "&& REPORT_GAS=true && npx hardhat test",
+    "blockInit": "cd hardhat && npm ci && cd ..",
+    "ci-test": "cd hardhat && npm run ci-test && cd .."
   }
 }

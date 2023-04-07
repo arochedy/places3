@@ -22,11 +22,7 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        run: cd hardhat && npm ci && cd ..
+        run: npm run blockInit
 
       - name: Run tests
-        run:  
-          cd hardhat && npx hardhat node &
-          npx hardhat run scripts/deploy.ts --network localhost &&
-          sleep 10 && 
-          npx hardhat test --network localhost
+        run: npm run ci-test
