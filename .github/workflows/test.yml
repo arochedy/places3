@@ -27,6 +27,6 @@ jobs:
       - name: Run tests
         run:  
           npx hardhat node &
-          npx hardhat run scripts/deploy.ts --network localhost &
-          sleep 10
+          npx hardhat run scripts/deploy.ts --network localhost &&
+          sleep 10 && 
           npx hardhat test --network localhost
