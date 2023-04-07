@@ -92,7 +92,7 @@ describe("DAO", function () {
       expect(proposal.xMax).to.be.equal(50);
 
       await expect(
-        dao.connect(account2).VoteForProposal(1, 0, true)
+        dao.connect(account2).VoteForProposal(1, 0)
       ).to.be.revertedWith("You must be a voter to perform this action");
     });
   });

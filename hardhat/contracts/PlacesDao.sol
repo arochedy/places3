@@ -1,13 +1,18 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+pragma solidity 0.8.18;
 import {Places} from "./Places.sol";
 
 // import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/// @title DAO contrat to manage the places contrat (addColor, erasePixels, changeMapSize)
+/// @author @aroche
+/// @notice Manage proposals to change the map
+/// @notice user that want to vote must have voted in the Places contract
+/// @notice more a user vote in the Places contract, more he has power in the DAO
+
 contract PlacesDao is Ownable {
-    /* proposal definitions */
     constructor(Places _mapContract) {
         mapContract = _mapContract;
     }
@@ -15,19 +20,23 @@ contract PlacesDao is Ownable {
     uint8 percentToAccept = 75;
 
     Places mapContract;
+
     enum ProposalTypes {
         ErasePixels,
         AddColor,
         ChangeMapSize
     }
 
+    /* proposal definitions */
+    /// @notice Base infos of a proposal (proposer, description, executed, votesFor, votesAgainst)
     struct BaseProposal {
         address proposer;
         string description;
         bool executed;
         uint256 votesFor;
-        uint256 votesAgainst;
     }
+
+    /// @notice Custom infos of a ErasePixels proposal
 
     struct ErasePixelsProposal {
         uint8 xMin;
@@ -35,30 +44,33 @@ contract PlacesDao is Ownable {
         uint8 xMax;
         uint8 yMax;
     }
+    /// @notice Custom infos of a AddColor proposal
 
     struct AddColorProposal {
         uint8 red;
         uint8 green;
         uint8 blue;
     }
+    /// @notice Custom infos of a ChangeMapSize proposal
 
     struct ChangeMapSizeProposal {
         uint16 newMapWidth;
         uint16 newMapHeight;
     }
 
+    /*end proposal definitions */
     struct UserVote {
         bool hasVoted;
-        bool voteFor;
         address voter;
     }
 
+    /// @dev We store proposals in arry of each proposal type
     ErasePixelsProposal[] public erasePixelsProposals;
     AddColorProposal[] public addColorProposals;
     ChangeMapSizeProposal[] public changeMapSizeProposals;
 
     mapping(bytes32 => BaseProposal) public proposalVotingInfos;
-    mapping(address => mapping(bytes32 => bool)) public userVotedForProposal; //a voir si on garde
+    mapping(address => mapping(bytes32 => bool)) public userVotedForProposal;
     mapping(bytes32 => UserVote) public userVotesForProposal;
 
     uint256 public erasePixelsProposalCount;
@@ -96,9 +108,7 @@ contract PlacesDao is Ownable {
         uint256 proposalId,
         ProposalTypes proposalType,
         address voter,
-        bool voteFor,
-        uint256 votesFor,
-        uint256 votesAgainst
+        uint256 votesFor
     );
 
     event ProposalExecuted(uint256 proposalId, ProposalTypes proposalType);
@@ -118,11 +128,11 @@ contract PlacesDao is Ownable {
         require(yMax < mapContract.mapHeight(), "yMax out of Map");
         require(xMin <= xMax, "xMin must be <= xMax");
         require(yMin <= yMax, "yMin must be <= yMax");
+
         BaseProposal memory baseProposal = BaseProposal(
             msg.sender,
             _description,
             false,
-            0,
             0
         );
 
@@ -135,7 +145,6 @@ contract PlacesDao is Ownable {
         );
 
         erasePixelsProposals.push(eraseProposal);
-        //attenton un user ne peux voter qu'une fois pour une proposal
 
         emit NewErasePixelsProposal(
             erasePixelsProposalCount,
@@ -173,7 +182,6 @@ contract PlacesDao is Ownable {
             msg.sender,
             _description,
             false,
-            0,
             0
         );
 
@@ -217,7 +225,6 @@ contract PlacesDao is Ownable {
             msg.sender,
             _description,
             false,
-            0,
             0
         );
 
@@ -249,10 +256,10 @@ contract PlacesDao is Ownable {
     /* END Add proposal functions */
 
     /* Vote functions */
+    /// @notice Vote for proposal
     function VoteForProposal(
         uint256 _proposalId,
-        ProposalTypes _proposalType,
-        bool _voteFor
+        ProposalTypes _proposalType
     ) external onlyVoter {
         require(_proposalId > 0, "Can't vote for proposal 0");
 
@@ -271,32 +278,24 @@ contract PlacesDao is Ownable {
             "This proposal has already been executed"
         );
 
-        if (_voteFor) {
-            proposalVotingInfos[proposalHash].votesFor += mapContract
-                .userVoteCount(msg.sender);
-        } else {
-            proposalVotingInfos[proposalHash].votesAgainst += mapContract
-                .userVoteCount(msg.sender);
-        }
-
-        userVotedForProposal[msg.sender][proposalHash] = true;
-        userVotesForProposal[proposalHash] = UserVote(
-            true,
-            _voteFor,
+        proposalVotingInfos[proposalHash].votesFor += mapContract.userVoteCount(
             msg.sender
         );
+
+        userVotedForProposal[msg.sender][proposalHash] = true;
+        userVotesForProposal[proposalHash] = UserVote(true, msg.sender);
         emit Voted(
             _proposalId,
             _proposalType,
             msg.sender,
-            _voteFor,
-            proposalVotingInfos[proposalHash].votesFor,
-            proposalVotingInfos[proposalHash].votesAgainst
+            proposalVotingInfos[proposalHash].votesFor
         );
 
         tallyProposalVotes(_proposalId, _proposalType);
     }
 
+    /// @notice Calculate if the proposal can be executed and execute it if it can
+    /// @dev we check in the places contrat the number of votes on the map
     function tallyProposalVotes(
         uint256 proposalId,
         ProposalTypes proposalType
@@ -306,41 +305,40 @@ contract PlacesDao is Ownable {
 
         uint256 voteFor = proposal.votesFor;
 
-        //Calculer le nombre de voix total (et voir si ça va a plus de 50%)
-        if (voteFor > proposal.votesAgainst) {
-            uint256 totalVoters = mapContract.totalVoteCount();
-            uint256 result = (voteFor * 100) / totalVoters;
+        //Calculer le nombre de voix total (et voir si ça va a plus de percentToAccept%)
 
-            if (result > percentToAccept) {
-                if (proposalType == ProposalTypes.ErasePixels) {
-                    mapContract.erasePixels(
-                        erasePixelsProposals[proposalId - 1].xMin,
-                        erasePixelsProposals[proposalId - 1].yMin,
-                        erasePixelsProposals[proposalId - 1].xMax,
-                        erasePixelsProposals[proposalId - 1].yMax
-                    );
-                } else if (proposalType == ProposalTypes.AddColor) {
-                    mapContract.addColor(
-                        addColorProposals[proposalId - 1].red,
-                        addColorProposals[proposalId - 1].green,
-                        addColorProposals[proposalId - 1].blue
-                    );
-                } else {
-                    mapContract.changeMapSize(
-                        changeMapSizeProposals[proposalId - 1].newMapWidth,
-                        changeMapSizeProposals[proposalId - 1].newMapHeight
-                    );
-                }
+        uint256 totalVoters = mapContract.totalVoteCount();
+        uint256 result = (voteFor * 100) / totalVoters;
 
-                proposalVotingInfos[proposalHash].executed = true;
-                emit ProposalExecuted(proposalId, proposalType);
+        if (result > percentToAccept) {
+            if (proposalType == ProposalTypes.ErasePixels) {
+                mapContract.erasePixels(
+                    erasePixelsProposals[proposalId - 1].xMin,
+                    erasePixelsProposals[proposalId - 1].yMin,
+                    erasePixelsProposals[proposalId - 1].xMax,
+                    erasePixelsProposals[proposalId - 1].yMax
+                );
+            } else if (proposalType == ProposalTypes.AddColor) {
+                mapContract.addColor(
+                    addColorProposals[proposalId - 1].red,
+                    addColorProposals[proposalId - 1].green,
+                    addColorProposals[proposalId - 1].blue
+                );
+            } else {
+                mapContract.changeMapSize(
+                    changeMapSizeProposals[proposalId - 1].newMapWidth,
+                    changeMapSizeProposals[proposalId - 1].newMapHeight
+                );
             }
+
+            proposalVotingInfos[proposalHash].executed = true;
+            emit ProposalExecuted(proposalId, proposalType);
         }
     }
 
     /* END Vote functions */
 
-    /* Get proposalInfo functions */
+    /* Gettters functions */
 
     function getProposalInfos(
         uint256 _proposalId,
@@ -443,10 +441,11 @@ contract PlacesDao is Ownable {
         return result;
     }
 
-    /* END Get proposalInfo functions */
+    /* END Getters functions */
 
     /* DAO members  */
 
+    /// @notice Check if user is a voter (should at least vote once on the map)
     mapping(address => bool) public voters;
     modifier onlyVoter() {
         require(

@@ -61,7 +61,7 @@ describe("DAO - addAddColorProposal", function () {
       var colorsBeforeExecution = await (await places.getColors()).length;
       await dao.addAddColorProposal("grey300", 100, 101, 102);
 
-      await dao.VoteForProposal(1, 1, true);
+      await dao.VoteForProposal(1, 1);
 
       var infos = await dao.getProposalInfos(1, 1);
       expect(infos.votesFor).to.be.equal(2); //2 because the user voted 2 times on the map

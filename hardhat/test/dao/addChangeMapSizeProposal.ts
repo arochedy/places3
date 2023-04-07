@@ -76,7 +76,7 @@ describe("DAO - addChangeMapSizeProposal", function () {
       expect(proposalsInfos[0].votesFor).to.be.equal(0);
       expect(proposalsInfos[0].description).to.be.equal("300*250pix");
 
-      await dao.VoteForProposal(1, 2, true);
+      await dao.VoteForProposal(1, 2);
 
       infos = await dao.getProposalInfos(1, 2);
       expect(infos.votesFor).to.be.equal(2); //2 because the user voted 2 times on the map

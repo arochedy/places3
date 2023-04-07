@@ -41,7 +41,7 @@ describe("DAO", function () {
         deployOneYearLockFixture
       );
 
-      const result = await dao.VoteForProposal(1, 0, true);
+      const result = await dao.VoteForProposal(1, 0);
 
       const tx = await result.wait();
 
@@ -51,12 +51,9 @@ describe("DAO", function () {
       expect(event?.args[0]).to.be.equal(1);
       expect(event?.args[1]).to.be.equal(0);
       expect(event?.args[2]).to.be.equal(owner.address);
+      expect(event?.args[3]).to.be.equal(1);
 
-      expect(event?.args[3]).to.be.equal(true);
-      expect(event?.args[4]).to.be.equal(1);
-      expect(event?.args[5]).to.be.equal(0);
-
-      await await expect(dao.VoteForProposal(1, 0, true)).to.be.revertedWith(
+      await await expect(dao.VoteForProposal(1, 0)).to.be.revertedWith(
         "You already voted for this proposal"
       );
     });
