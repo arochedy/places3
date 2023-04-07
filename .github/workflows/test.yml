@@ -25,4 +25,8 @@ jobs:
         run: cd hardhat && npm ci && cd ..
 
       - name: Run tests
-        run: npm run test
+        run:  
+          npx hardhat node &
+          npx hardhat run scripts/deploy.ts --network localhost &
+          sleep 10
+          npx hardhat test --network localhost
