@@ -1,15 +1,10 @@
 import React, { Component, useEffect, useState } from "react";
-import { render } from "react-dom";
 import { Stage, Layer, Rect, Text } from "react-konva";
-import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Button, Spinner } from "@chakra-ui/react";
 
-import Konva from "konva";
 import { useToast } from "@chakra-ui/react";
-
-// import { useEth } from '../contexts/EthContext';
 import { placesAbi, placesAddress } from "../abi/places-abi";
 import {
-  useContractRead,
   useContractReads,
   usePrepareContractWrite,
   useContractWrite,
@@ -34,12 +29,8 @@ import { Color } from "../models/color";
 import { MapEvents } from "./MapEvents";
 
 export function Canvas() {
-  const [mapHeight, setMapHeight] = useState(0);
-  const [mapWidth, setMapWidth] = useState(0);
   const [colors, setColors] = useState<Color[]>([]);
   const [displayColors, setDisplayColors] = useState<string[]>([]);
-  const [pixels, setPixels] = useState<Pixel[]>([]);
-  const [nbRect, setNbRect] = useState(30);
   const [selectedPixel, setSelectedPixel] = useState<Rectangle>();
   const [rectangles, setRectangles] = useState<Rectangle[]>([]);
   const [selectedColor, setSelectedColor] = useState<number>();
@@ -98,7 +89,7 @@ export function Canvas() {
   } = useContractWrite(config);
 
   const {
-    isLoading: isLoadingResult,
+    isLoading: isLoadingResultWrite,
     isSuccess,
     data: dataWriteEnd,
   } = useWaitForTransaction({
@@ -132,11 +123,8 @@ export function Canvas() {
       const newColors = data[0] as Color[];
       setColors(newColors);
       const newPixels = data[1] as Pixel[];
-      setPixels(newPixels);
       let currentMapWidth = data[2] as number;
       let currentMapHeight = data[3] as number;
-      setMapWidth(currentMapWidth);
-      setMapHeight(currentMapHeight);
 
       setRectSize(window.innerWidth / currentMapWidth);
       generateRectangles(
@@ -191,19 +179,8 @@ export function Canvas() {
     return color;
   };
 
-  const getColorFromRgb = (red: number, green: number, blue: number) => {
-    let color = `rgb(${red}, ${green}, ${blue})`;
-    return color;
-  };
-
   const onSelectColor = (colorIndex: number) => {
     setSelectedColor(colorIndex);
-    // const newRect = [...rectangles];
-
-    // const index = newRect.findIndex((rect) => rect.id === id);
-
-    // // newRect[index].color = getColorFromIndex(color, colors);
-    // // setRectangles(newRect);
   };
 
   const validateColor = () => {
@@ -253,6 +230,7 @@ export function Canvas() {
   // And then we have canvas shapes inside the Layer
   return (
     <>
+    {isLoadingResultWrite && <Spinner />}
       <Wrap spacing="30px">
         <WrapItem>
           <Button variant="link" onClick={() => setRectSize(rectSize + 10)}>

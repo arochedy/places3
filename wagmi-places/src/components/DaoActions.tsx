@@ -24,6 +24,8 @@ import {
   TabPanels,
   TabPanel,
   Heading,
+  Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { DaoProposals } from "./DaoProposals";
 
@@ -42,7 +44,12 @@ export const DaoActions = () => {
 
   const { isConnected, address } = useAccount();
 
-  const { config } = usePrepareContractWrite({
+  /* eraseProposal */
+  const {
+    config,
+    isError: isErrorPrepareWriteErasePixel,
+    error: errorPrepareWriteErasePixel,
+  } = usePrepareContractWrite({
     address: daoAddress,
     abi: daoAbi,
     functionName: "addEraseProposal",
@@ -51,6 +58,7 @@ export const DaoActions = () => {
       console.log(error);
     },
   });
+  const toast = useToast();
 
   const {
     data: dataWrite,
@@ -61,12 +69,23 @@ export const DaoActions = () => {
   } = useContractWrite(config);
 
   const {
-    isLoading: isLoadingResult,
-    isSuccess,
+    isLoading: isLoadingResultErase,
+    isSuccess: isSuccessErase,
     data: dataWriteEnd,
   } = useWaitForTransaction({
     hash: dataWrite?.hash,
+    onSuccess: () => {
+      toast({
+        title: "Proposition envoyée ! ",
+        description: "Votre proposition est envoyée, merci !",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    },
   });
+
+  /* end eraseProposal */
 
   /* change mapSize */
   const { config: configChangeMapSize, isError: isErrorWriteChangeMapSize } =
@@ -94,6 +113,15 @@ export const DaoActions = () => {
     data: dataWriteChnageMapSizeEnd,
   } = useWaitForTransaction({
     hash: dataWriteChangeMapSize?.hash,
+    onSuccess: () => {
+      toast({
+        title: "Proposition envoyée ! ",
+        description: "Votre proposition est envoyée, merci !",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    },
   });
 
   /* end change mapSize */
@@ -122,6 +150,15 @@ export const DaoActions = () => {
     data: dataWriteAddColorEnd,
   } = useWaitForTransaction({
     hash: dataWriteAddColor?.hash,
+    onSuccess: () => {
+      toast({
+        title: "Proposition envoyée ! ",
+        description: "Votre proposition est envoyée, merci !",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    },
   });
   /* end add color */
 
@@ -143,59 +180,66 @@ export const DaoActions = () => {
                 Vous pouvez proposer d'effacer des pixels sur la carte. Pour
                 cela, vous devez indiquer les coordonnées des pixels à effacer.
               </p>
-              <Input
-                placeholder="description"
-                onChange={(text) => setDescription(text.target.value)}
-              />
-              <NumberInput
-                onChange={(value) => setXMin(Number(value))}
-                defaultValue={0}
-                min={0}
-                max={200}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <NumberInput
-                onChange={(value) => setYMin(Number(value))}
-                defaultValue={0}
-                min={0}
-                max={200}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <NumberInput
-                onChange={(value) => setXMax(Number(value))}
-                defaultValue={0}
-                min={0}
-                max={200}
-              >
-                <NumberInputField placeholder="Xmax" />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <NumberInput
-                onChange={(value) => setYMax(Number(value))}
-                defaultValue={0}
-                min={0}
-                max={200}
-              >
-                <NumberInputField placeholder="Ymax" />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <Button onClick={() => writeErasePixel?.()}>Valider</Button>
+
+              {isLoadingResultErase ? (
+                <Spinner />
+              ) : (
+                <>
+                  <Input
+                    placeholder="description"
+                    onChange={(text) => setDescription(text.target.value)}
+                  />
+                  <NumberInput
+                    onChange={(value) => setXMin(Number(value))}
+                    defaultValue={0}
+                    min={0}
+                    max={200}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                  <NumberInput
+                    onChange={(value) => setYMin(Number(value))}
+                    defaultValue={0}
+                    min={0}
+                    max={200}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                  <NumberInput
+                    onChange={(value) => setXMax(Number(value))}
+                    defaultValue={0}
+                    min={0}
+                    max={200}
+                  >
+                    <NumberInputField placeholder="Xmax" />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                  <NumberInput
+                    onChange={(value) => setYMax(Number(value))}
+                    defaultValue={0}
+                    min={0}
+                    max={200}
+                  >
+                    <NumberInputField placeholder="Ymax" />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                  <Button onClick={() => writeErasePixel?.()}>Valider</Button>
+                </>
+              )}
             </div>
           </TabPanel>
           <TabPanel>

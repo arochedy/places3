@@ -25,12 +25,12 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <WagmiConfig client={client}>
       {/* <App /> */}
       <ChakraProvider>
         <RouterProvider router={router} />
       </ChakraProvider>
     </WagmiConfig>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

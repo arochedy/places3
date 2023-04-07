@@ -107,9 +107,6 @@ export function DaoProposals() {
   });
 
   useEffect(() => {
-    console.log(isLoading);
-    console.log(isError, error);
-    console.log(data);
     if (data) {
       let proposals: ErasePixelsProposalInfos[] = [];
       let proposalsBack = data[1] as any[];
@@ -411,32 +408,22 @@ export function DaoProposals() {
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <div>Historique des votes</div>
-      <List>
-        {proposalExecutedEvents.map((event: any, index: number) => (
-          <ListItem key={"proposalEvent" + index}>
-            {JSON.stringify(event.args)}X : {event.args.x} Y {event.args.y}{" "}
-            ColorId :{" "}
-            {/* {BigNumber.from(event.args.color).toNumber()} voter :{" "} */}
-            {event.args.voter}
-          </ListItem>
-        ))}
-      </List>
+      {/* <div>Historique des votes</div>
 
-      <div>Propositions executés</div>
       <List>
         {votedEvents.map((event: any, index: number) => (
           <ListItem key={"voted" + index}>
-            {/* {JSON.stringify(event.args)} */}
+            {JSON.stringify(event.args)}
+            Nombres de votes : {event.args.voteCount}
             {event.args.x} Y {event.args.y} ColorId :{" "}
             {/* {BigNumber.from(event.args.color).toNumber()} Nombre de votes :{" "}
             {BigNumber.from(event.args.voteCount).toNumber()} */}
-            {/* X : {event.args.x} Y {event.args.Y} ColorId :{" "}
+      {/* X : {event.args.x} Y {event.args.Y} ColorId :{" "}
             {BigNumber.from(event.args.color).toNumber()} voter :{" "}
             {event.args.voter} */}
-          </ListItem>
+      {/* </ListItem>
         ))}
-      </List>
+      // </List> */}
     </div>
   );
 }
