@@ -4,7 +4,7 @@ front disponible ici : https://places3.vercel.app/
 
 Dao au même endroit : https://places3.vercel.app/dao
 
-video de démo : https://youtu.be/j2kyVptV17U et fichier place3.mov
+video de démo : https://youtu.be/j2kyVptV17U et fichier source ici : https://github.com/arochedy/places3/blob/main/places3.mov
 
 ## Description
 Le but est de créer un outil permettant une gestion collaborative d’un dessin 2D de manière décentralisée. 
