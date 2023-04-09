@@ -2,16 +2,21 @@
 
 front disponible ici : https://places3.vercel.app/
 
+Dao au même endroit : https://places3.vercel.app/dao
+
+video de démo : https://youtu.be/j2kyVptV17U et fichier place3.mov
+
 ## Description
 Le but est de créer un outil permettant une gestion collaborative d’un dessin 2D de manière décentralisée. 
 
-Le client souhaite permettre aux utilisateurs de voter pour des couleurs pour les pixels de leur choix. 
+les utilisateurs votent pour des couleurs pour les pixels de leur choix. 
 
-La carte doit se mettre à jour à chaque fois qu’une couleur “gagne” un pixel
+La carte se met à jour à chaque fois qu’une couleur “gagne” un pixel
 
-Une organisation décentralisé doit permettre la modération (éviter des dessin choquants) et permettre la mise en place des évolutions proposées par les joueurs
+Une organisation décentralisé permet la modération (éviter des dessin choquants par exemple) et permet la mise en place des évolutions proposées par les joueurs (ajouter des couleurs et agrandir la cartre)
 
 Les smart contrats sont deployés sur polygon mumbai 
+
 
 ## HELP 
 
