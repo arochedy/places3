@@ -203,7 +203,7 @@ contract PlacesDao is Ownable {
             blue
         );
 
-        proposalVotingInfos[
+       fc proposalVotingInfos[
             getProposalId(addColorProposalCount, ProposalTypes.AddColor)
         ] = baseProposal;
     }

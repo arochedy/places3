@@ -1,9 +1,25 @@
-.row{
-    display: flex;
-    flex-direction: row;
-  
+body {
+  padding: 30px;
 }
 
-.colors{
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.colors {
   margin-bottom: 30px;
+}
+
+canvas {
+  border: 1px solid black !important;
+}
+
+@media (max-width: 480px) {
+  .header {
+    display: flex;
+    flex-direction: column !important;
+    justify-content: center;
+    text-align: center;
+  }
 }

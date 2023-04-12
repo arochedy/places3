@@ -6,7 +6,7 @@ export function Account() {
 
   return (
     <div>
-      {ensName ?? address}
+      addresse connecté : {ensName ?? address}
       {ensName ? ` (${address})` : null}
     </div>
   )

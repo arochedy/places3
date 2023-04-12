@@ -35,6 +35,7 @@ export function Canvas() {
   const [rectangles, setRectangles] = useState<Rectangle[]>([]);
   const [selectedColor, setSelectedColor] = useState<number>();
   const [isOpenColorModal, setIsOpenColorModal] = useState(false);
+  const [isActivatedBorder, setIsActivatedBorder] = useState(false);
 
   const toast = useToast();
 
@@ -213,6 +214,12 @@ export function Canvas() {
   //     // alert('saved');
   // }
 
+  const getStrokeWidth = (rect: Rectangle) => {
+    if (rect.id == selectedPixel?.id) {
+      return 3;
+    }
+    return isActivatedBorder ? 1 : 0;
+  };
   const onSelectPixel = (pixel: Rectangle) => {
     setSelectedPixel(pixel);
     setIsOpenColorModal(true);
@@ -230,8 +237,8 @@ export function Canvas() {
   // And then we have canvas shapes inside the Layer
   return (
     <>
-    {isLoadingResultWrite && <Spinner />}
-      <Wrap spacing="30px">
+      {isLoadingResultWrite && <Spinner />}
+      <Wrap spacing="30px" style={{ marginTop: 30 }}>
         <WrapItem>
           <Button variant="link" onClick={() => setRectSize(rectSize + 10)}>
             ZOOM +
@@ -240,6 +247,14 @@ export function Canvas() {
         <WrapItem>
           <Button variant="link" onClick={() => setRectSize(rectSize - 10)}>
             ZOOM -
+          </Button>
+        </WrapItem>
+        <WrapItem>
+          <Button
+            variant="link"
+            onClick={() => setIsActivatedBorder((border: boolean) => !border)}
+          >
+            {isActivatedBorder ? "Désactiver" : "Activer"} les bordures
           </Button>
         </WrapItem>
       </Wrap>
@@ -266,9 +281,10 @@ export function Canvas() {
                         : rect.color
                     }
                     stroke="black"
-                    strokeWidth={rect.id == selectedPixel?.id ? 3 : 1}
+                    strokeWidth={getStrokeWidth(rect)}
                     shadowBlur={rect.id == selectedPixel?.id ? 5 : 0}
                     onClick={() => onSelectPixel(rect)}
+                    onTouchStart={() => onSelectPixel(rect)}
                   />
                 );
               })}

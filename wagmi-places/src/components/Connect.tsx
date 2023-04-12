@@ -33,23 +33,28 @@ export function Connect() {
             <div className="row">
               <NetworkSwitcher />
             </div>
-            <Button
-              colorScheme="blue"
-              display={"block"}
-              onClick={() => disconnect()}
-            >
-              Disconnect from {connector?.name}
-            </Button>
-            <Button
-              display={"block"}
-              colorScheme="blue"
-              onClick={() => setIsModalOpen(true)}
-            >
-              Autres moyen de connection
-            </Button>
-            <Button display={"block"} onClick={() => (location.href = "/dao")}>
-              Aller à la dao
-            </Button>
+            <div className="row" style={{ justifyContent: "space-between" }}>
+              <Button
+                colorScheme="blue"
+                display={"block"}
+                onClick={() => disconnect()}
+              >
+                Logout
+              </Button>
+              {/* <Button
+                display={"block"}
+                colorScheme="blue"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Autres moyen de connection
+              </Button> */}
+              <Button
+                display={"block"}
+                onClick={() => (location.href = "/dao")}
+              >
+                DAO
+              </Button>
+            </div>
           </>
         ) : (
           connectors

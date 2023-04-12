@@ -1,5 +1,5 @@
 import { useNetwork, useSwitchNetwork } from "wagmi";
-import { Button, ButtonGroup } from '@chakra-ui/react'
+import { Button, ButtonGroup } from "@chakra-ui/react";
 
 export function NetworkSwitcher() {
   const { chain } = useNetwork();
@@ -11,7 +11,7 @@ export function NetworkSwitcher() {
   return (
     <div>
       <div>
-        Connected to {chain?.name ?? chain?.id}
+        Réseau : {chain?.name ?? chain?.id}
         {chain?.unsupported && " (unsupported)"}
       </div>
 

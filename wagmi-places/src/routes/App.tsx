@@ -19,6 +19,7 @@ export function App() {
   return (
     <>
       <div
+       className="header"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -43,3 +44,5 @@ export function App() {
     </>
   );
 }
+
+
