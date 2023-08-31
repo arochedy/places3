@@ -5,14 +5,19 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectLegacyConnector } from "wagmi/connectors/walletConnectLegacy";
 import { publicProvider } from "wagmi/providers/public";
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [
-    polygonMumbai,
-    ...(import.meta.env?.MODE === "development" ? [] : []),
-  ],
+  [polygonMumbai, ...(import.meta.env?.MODE === "development" ? [] : [])],
   [publicProvider()]
 );
+
+const connector = new WalletConnectConnector({
+  options: {
+    projectId: process.env.WALLETCONNECT_PROJECT_ID,
+    showQrModal: true,
+  },
+});
 
 export const client = createClient({
   autoConnect: true,
@@ -24,6 +29,7 @@ export const client = createClient({
         appName: "wagmi",
       },
     }),
+    connector,
     new WalletConnectLegacyConnector({
       chains,
       options: {
@@ -39,6 +45,6 @@ export const client = createClient({
     }),
   ],
   provider,
-  
+
   webSocketProvider,
 });
