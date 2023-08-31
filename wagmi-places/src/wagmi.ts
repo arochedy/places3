@@ -14,7 +14,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 
 const connector = new WalletConnectConnector({
   options: {
-    projectId: import.meta.env..WALLETCONNECT_PROJECT_ID,
+    projectId: "85f200364d2b11de938f390b9930130d",
     showQrModal: true,
   },
 });
