@@ -5,7 +5,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectLegacyConnector } from "wagmi/connectors/walletConnectLegacy";
 import { publicProvider } from "wagmi/providers/public";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 const { chains, provider, webSocketProvider } = configureChains(
   [polygonMumbai, ...(import.meta.env?.MODE === "development" ? [] : [])],
@@ -14,7 +14,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 
 const connector = new WalletConnectConnector({
   options: {
-    projectId: "85f200364d2b11de938f390b9930130d",
+    projectId: import.meta.env..WALLETCONNECT_PROJECT_ID,
     showQrModal: true,
   },
 });
